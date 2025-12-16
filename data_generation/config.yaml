@@ -1,0 +1,46 @@
+experiment:
+  mode: "vectorized"
+  runs: 12
+  sensors: 8
+  timesteps: 600
+  noise: 0.05
+  spikes: true
+  drift: 0.05
+  reducers: ["AdaptiveSampling", "AdaptiveThreshold"]
+  serializers: ["JSON"]
+
+# sweep stronger settings
+sweep:
+  adaptivesampling:
+    low_thresh:  [0.08, 0.12, 0.18]     # was 0.03..0.08 → too sensitive
+    high_thresh: [0.25, 0.35, 0.5]      # allow longer gaps in calm periods
+  adaptivethreshold:
+    initial_thresh: [0.15, 0.22, 0.30]  # bigger deviation needed to transmit
+    max_gap: [20, 40, 60]               # heartbeat: allow sparser sends
+
+# defaults used when not swept
+adaptive_sampling:
+  base_interval: 1.0
+  low_thresh: 0.12
+  high_thresh: 0.35
+
+adaptive_threshold:
+  initial_thresh: 0.22
+  min_thresh: 0.05
+  max_thresh: 0.8
+  thresh_smooth: 0.2
+  ph_delta: 0.10
+  ph_lambda: 20
+  kf_process_var: 0.006
+  kf_meas_var: 0.01
+  max_gap: 40
+  drift_boost: 3.0
+
+
+# streaming block (unchanged; used only when mode: "streaming")
+streaming:
+  sensors: 3
+  steps_per_sensor: 300
+  sampling_hz: 2.0
+  seed: 123
+  realtime: false
