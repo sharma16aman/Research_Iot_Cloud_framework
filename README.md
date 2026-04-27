@@ -348,7 +348,7 @@ Contributions are welcome! Please:
 
 For questions or issues:
 - Open an issue on GitHub
-- Email: your.email@domain.com
+- Email: Sharma.aman1605@gmail.com
 
 ## 🙏 Acknowledgments
 
