@@ -1,0 +1,3 @@
+reduction_rate_mean,reduction_rate_std,rmse_mean,rmse_std,serialized_size_mean,serialized_size_std,baseline_size_mean,size_reduction_%,strategies,serializer,protocol,num_runs,num_samples
+79.16000000000001,0.241660919471893,0.09454071654327059,0.017622533875464523,7603.0,92.1455370595885,36502.6,79.17134669859134,AdaptiveSampling,JSON,HTTP,5,1000
+79.16000000000001,0.241660919471893,0.09454071654327059,0.017622533875464523,7603.0,92.1455370595885,36502.6,79.17134669859134,AdaptiveSampling,JSON,MQTT,5,1000

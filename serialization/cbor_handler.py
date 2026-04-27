@@ -1,7 +1,7 @@
-import json
+import cbor2
 
-def dumps(obj):
-    return json.dumps(obj).encode("utf-8")
+def serialize(data):
+    return cbor2.dumps(data)
 
-def loads(b):
-    return json.loads(b.decode("utf-8"))
+def deserialize(payload):
+    return cbor2.loads(payload)

@@ -1,14 +1,7 @@
-try:
-    import cbor2
-except Exception as e:
-    cbor2 = None
+import json
 
-def dumps(obj):
-    if cbor2 is None:
-        raise RuntimeError("cbor2 not installed")
-    return cbor2.dumps(obj)
+def serialize(data):
+    return json.dumps(data).encode("utf-8")
 
-def loads(b):
-    if cbor2 is None:
-        raise RuntimeError("cbor2 not installed")
-    return cbor2.loads(b)
+def deserialize(payload):
+    return json.loads(payload.decode("utf-8"))

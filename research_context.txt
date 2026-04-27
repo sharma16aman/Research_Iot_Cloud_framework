@@ -1,0 +1,155 @@
+1.	Introduction
+The rapid proliferation of Internet of Things (IoT) technologies has led to the deployment of large-scale sensor networks across diverse application domains such as smart cities, healthcare monitoring, industrial automation, environmental sensing, and intelligent transportation systems. These IoT devices continuously generate time-series data that must often be transmitted to centralized cloud servers for storage, processing, and decision-making.
+However, continuous transmission of raw sensor data poses several practical challenges. First, it results in excessive bandwidth consumption, especially in dense IoT deployments. Second, it increases energy consumption, which is critical for battery-powered and resource-constrained devices. Third, it introduces latency and scalability limitations at both the network and cloud levels. These issues collectively motivate the need for more efficient data handling mechanisms within IoT systems.
+Edge computing has emerged as a promising paradigm to address these challenges by enabling computation and data processing closer to the data source. By performing data reduction at the edge, only relevant or summarized information is transmitted to the cloud, thereby reducing communication overhead while still preserving essential information.
+ 
+Although numerous edge-based data reduction techniques have been proposed in the literature such as adaptive sampling, event-driven transmission, aggregation, and filtering the existing studies focus on a single technique or evaluate different techniques under non-uniform experimental settings. This makes objective comparison difficult.
+The primary objective of this research is to bridge this gap by developing a unified benchmarking framework that enables fair, reproducible, and quantitative comparison of multiple IoT edge data reduction strategies under identical conditions. This report documents the current progress of this research, emphasizing the implemented framework, experimental workflow, and results obtained so far.
+
+2.	Progress Beyond the Initial Report
+The previously submitted report primarily focused on understanding the research problem, surveying existing literature, and proposing a conceptual edge-cloud architecture for IoT data reduction. At that stage, the work was exploratory in nature, and no complete experimental system had been implemented.
+Since the submission of the initial report, substantial progress has been made. The research has transitioned from a conceptual phase to an implementation-driven phase, where theoretical ideas from the literature have been translated into a working experimental framework.
+The major advancements achieved since the initial report include:
+•	Design of a modular edge-cloud system architecture suitable for experimentation
+•	Implementation of synthetic IoT data generation for controlled analysis
+•	Development of multiple edge-based data reduction strategy modules
+•	Integration of cloud-side data reception, reconstruction, and evaluation
+•	Automation of performance metric computation and result generation
+This progress demonstrates a clear shift from literature review to hands-on system development and experimental validation, which is a crucial milestone in the overall research lifecycle.
+
+3.	System Architecture Overview
+The implemented system follows a three-layer IoT edge-cloud architecture, which reflects the design assumptions commonly adopted in modern IoT and edge-computing literature. This architectural separation is crucial for isolating responsibilities, enabling scalability, and supporting systematic experimentation.
+ 
+3.1	IoT Sensing Layer
+The IoT sensing layer represents a collection of distributed sensors deployed in the environment. Each sensor generates time-series data that may correspond to physical quantities such as temperature, humidity, pressure, or other environmental or system parameters.
+In the implemented framework, this layer is abstracted through a synthetic data generator, which emulates the behavior of real IoT sensors. The abstraction allows controlled experimentation without being tied to a specific application domain. From a research perspective, this design choice ensures that the evaluation focuses on the data reduction strategies themselves, rather than on dataset-specific characteristics.
+3.2	Edge Processing Layer
+The edge layer is the core component of the proposed framework. It is responsible for processing raw sensor data locally before transmission to the cloud. This layer hosts multiple data reduction modules, each implementing a distinct reduction strategy.
+Key characteristics of the edge layer include:
+•	Modular design, allowing strategies to be enabled or disabled independently
+•	Strategy-agnostic execution pipeline, ensuring fair comparison
+•	Parameterized operation, enabling sensitivity analysis
+By placing data reduction logic at the edge, the framework realistically models scenarios where bandwidth, energy, or latency constraints necessitate local processing.
+3.3	Cloud Layer
+The cloud layer represents centralized infrastructure responsible for receiving reduced data from the edge. Its primary roles include:
+•	Data reception and storage
+•	Signal reconstruction (where applicable)
+•	Computation of evaluation metrics
+Importantly, the cloud layer does not influence the reduction process itself. This strict separation ensures that all intelligence related to data reduction resides at the edge, in accordance with edge- computing principles. The cloud layer is used solely for objective evaluation and analysis.
+Overall, this layered architecture provides a clean and extensible foundation for benchmarking edge-based IoT data reduction techniques.
+
+ 
+4.	Data Generation Model
+To ensure fair and reproducible experiments, synthetic IoT sensor data is generated rather than using real-world datasets. Synthetic data allows precise control over:
+•	Number of sensors
+•	Sampling frequency
+•	Noise level
+•	Signal dynamics
+Each sensor generates a time-series signal modeled as:
+
+x(t) = f(t) + ϵ(t)
+
+where (f(t)) represents the underlying signal pattern and (ϵ(t)) is additive Gaussian noise. Configuration files are used to control experimental parameters, enabling systematic evaluation and repeatability.
+The use of synthetic data ensures that observed differences in performance arise solely due to the data reduction strategies and not due to dataset bias.
+
+5.	Edge-Based Data Reduction Strategies Implemented
+The core of the framework lies in the implementation of multiple well-known edge-based data reduction strategies. Each strategy is implemented as an independent module and evaluated under identical conditions.
+5.1	Adaptive Sampling
+Adaptive sampling dynamically adjusts the sampling rate based on signal variation. During periods of rapid signal change, the sampling rate increases, while during stable periods it decreases. This approach aims to balance accuracy and communication efficiency.
+5.2	Event-Driven / Adaptive Threshold Transmission
+In this strategy, data is transmitted only when the change between the current sensor value and the last transmitted value exceeds a predefined threshold. This significantly reduces redundant transmissions when the signal remains stable.
+ 
+5.3	Aggregation-Based Reduction
+Aggregation combines multiple samples within a fixed time window into summary statistics (such as mean values). This reduces data volume at the cost of temporal resolution.
+5.4	Filtering-Based Reduction
+Filtering removes noisy or insignificant samples before transmission. The objective is to preserve overall signal trends while suppressing unnecessary data.
+
+6.	Experimental Workflow
+The experimental workflow defines the sequence of operations through which raw sensor data is transformed, transmitted, and evaluated. A well-defined workflow is essential for ensuring repeatability and methodological rigor.
+6.1	Data Generation Phase
+The workflow begins with the generation of synthetic IoT sensor data. Configuration files specify parameters such as the number of sensors, sampling frequency, signal length, and noise characteristics. This phase produces time-series data that emulate realistic IoT sensor behavior while remaining fully controllable.
+6.2	Strategy Selection and Configuration
+Next, a data reduction strategy is selected for evaluation. Each strategy operates with a specific set of parameters (e.g., thresholds, sampling limits), which are defined prior to execution. By varying these parameters across runs, the framework supports systematic exploration of strategy behavior.
+6.3	Edge-Side Data Reduction
+During this phase, raw sensor data is processed by the selected reduction strategy at the edge layer. The output consists of a reduced data stream containing fewer samples or messages than the original signal. This reduced stream represents the data that would be transmitted over the network in a real IoT deployment.
+6.4	Data Transmission and Serialization
+Reduced data is serialized into a network-transmissible format before being sent to the cloud. In the current experimental scope, JSON serialization is used. The framework also supports alternative serialization formats, enabling future evaluation of their impact on transmission efficiency.
+ 
+6.5	Cloud-Side Reception and Reconstruction
+Upon reception at the cloud layer, the reduced data is stored and, where necessary, reconstructed to approximate the original signal. Reconstruction enables direct comparison between original and received data, forming the basis for accuracy evaluation.
+6.6	Metric Computation and Result Generation
+Finally, efficiency and accuracy metrics are computed. These metrics are aggregated across experimental runs and automatically saved in the form of plots and summary tables. This automated result generation minimizes manual intervention and reduces the risk of reporting errors.
+The structured workflow ensures that all strategies are evaluated under identical conditions, thereby enabling fair and reproducible benchmarking.
+
+7.	Evaluation Metrics
+To objectively assess the performance of each data reduction strategy, two categories of metrics are used:
+7.1	Efficiency Metrics
+Efficiency is measured in terms of data volume reduction compared to raw transmission. The data reduction ratio is computed as:
+
+η = 1 – (Dedge / Draw)
+
+where (Draw) represents the data volume transmitted without reduction and (Dedge) represents the data transmitted after edge processing.
+7.2	Accuracy Metrics
+Accuracy is measured using reconstruction error metrics such as Root Mean Square Error (RMSE), which quantify the deviation between the original and reconstructed signals.
+
+8.	Experimental Results
+8.0	Scope of Current Results
+To clearly delineate the current stage of the research and avoid ambiguity, it is important to explicitly state the scope of the results presented in this report.
+ 
+The experimental results reported in this section correspond to a controlled subset of the full framework capabilities. Specifically:
+•	Results are presented for adaptive sampling and adaptive threshold (event-driven) transmission strategies.
+•	The serializer is fixed to JSON for the current experiments to limit experimental dimensions and ensure clarity of interpretation.
+•	Efficiency and accuracy metrics are computed in terms of transmitted bytes and reconstruction error (RMSE).
+The framework additionally supports other reduction strategies such as aggregation-based and filtering-based reduction, as well as alternative serialization formats such as CBOR. These components are fully implemented at the framework level but are not executed in the current experimental runs. Their evaluation is planned as an extension in subsequent phases of the research.
+This scoped evaluation approach ensures that the presented results are methodologically sound, interpretable, and reproducible, while leaving room for systematic expansion of experimental dimensions in future work.
+The framework was executed successfully after installing all required dependencies. Quantitative results were generated automatically, including plots and summary tables.
+8.1	Baseline (No Reduction)
+•	Average transmitted data: ~79,360 bytes
+•	Represents raw data transmission without any edge processing This baseline serves as the reference point for all comparisons.
+8.2	Adaptive Sampling Results
+•	Average data reduction: ~78.5%
+•	Average RMSE: ~0.10
+•	Average transmitted data: ~17,031 bytes
+Adaptive sampling achieves substantial communication savings while maintaining reasonable signal fidelity, making it suitable for applications requiring balanced performance.
+8.3	Adaptive Threshold (Event-Driven) Results
+•	Average data reduction: ~94.5%
+•	Average RMSE: ~0.07
+ 
+•	Average transmitted data: ~4,342 bytes
+Event-driven transmission achieves very high data reduction with only a small increase in reconstruction errors, particularly effective for signals with long stable periods.
+
+Strategy	Avg. Reduction (%)	Avg. RMSE	Avg. Transmitted Bytes
+Adaptive Sampling	78.8	0.102	~221,500
+Adaptive Threshold
+(Event-Driven)	95.3	0.074	~52,500
+Strategy-wise average efficiency and accuracy metrics computed across multiple parameter configurations
+
+
+8.4	Accuracy-Efficiency Trade Off
+The generated trade-off plot clearly demonstrates that higher data reduction generally leads to increased reconstruction errors. However, the relationship is not linear, and certain strategies (such as adaptive thresholding) achieve both high efficiency and acceptable accuracy under specific conditions.
+
+Fig. 1: Accuracy–efficiency trade-off for edge-based IoT data reduction strategies, illustrating the relationship between data reduction ratio and reconstruction error (RMSE).
+
+9.	Discussion
+The experimental results obtained using the proposed framework provide several important insights into edge-based IoT data reduction. First, the results clearly demonstrate that performing data reduction at the edge can significantly reduce communication overhead when compared to raw data transmission. Even relatively simple strategies lead to substantial bandwidth savings.
+ 
+Second, the results highlight the inherent trade-off between communication efficiency and data accuracy. Strategies that aggressively reduce data transmission, such as event-driven approaches, achieve higher reduction ratios but may introduce greater reconstruction errors. Conversely, strategies like adaptive sampling preserve signal fidelity more effectively but offer comparatively lower reduction.
+Third, the findings reinforce the notion that no single data reduction strategy is universally optimal. Instead, the choice of strategy should be guided by application-specific requirements, such as tolerance to error, available bandwidth, and energy constraints.
+From a systems research perspective, the most significant outcome is not the performance of any individual strategy, but the demonstration that a unified and reproducible benchmarking framework enables objective comparison. Such a framework can help researchers and practitioners make informed decisions when selecting edge data reduction techniques for real- world IoT deployments.
+
+10.	Current Status and Future Work Current Status
+•	Complete edge-cloud benchmarking framework implemented
+•	Multiple data reduction strategies evaluated
+•	Quantitative results, plots, and tables generated
+Future Work
+•	Extensive parameter sensitivity analysis
+•	Evaluation on real-world IoT datasets
+•	Extension to hybrid reduction strategies
+
+11.	Conclusion
+This report documents the successful transition from an initial, conceptually driven research phase to a fully implemented and experimentally validated framework for benchmarking IoT edge-based data reduction strategies. The primary focus of the current stage of research has been the design and realization of a systematic, reproducible, and extensible experimental infrastructure, rather than the proposal of a new reduction algorithm.
+Through the implementation of a modular edge–cloud architecture, controlled synthetic data generation, and automated evaluation pipelines, the framework demonstrates that edge-side data
+ 
+reduction can significantly reduce communication overhead while preserving acceptable levels of data fidelity. The experimental results quantitatively confirm the accuracy–efficiency trade-off that is central to IoT data reduction and illustrate how different strategies occupy different positions within this trade-off space.
+An important outcome of the present work is the establishment of a methodologically sound benchmarking baseline. By evaluating multiple data reduction strategies under identical conditions and using uniform metrics, the framework enables fair and objective comparison. This addresses a key limitation in much of the existing literature, where techniques are often assessed in isolation or under differing experimental assumptions.
+The current progress provides a strong and credible foundation for subsequent research phases. Future work will focus on expanding the experimental scope to include additional reduction strategies, alternative serialization formats, broader parameter sensitivity analysis, and evaluation using real-world IoT datasets. With these planned extensions, the framework is well positioned to support publication-quality research and contribute meaningful insights to the broader domains of edge computing and IoT data management.

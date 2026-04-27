@@ -1,0 +1,18 @@
+2026-01-19 17:07:21,538 - INFO - ============================================================
+2026-01-19 17:07:21,597 - INFO - IoT Edge-Cloud Data Reduction Framework
+2026-01-19 17:07:21,726 - INFO - ============================================================
+2026-01-19 17:07:21,821 - INFO - Validating configuration...
+2026-01-19 17:07:22,718 - INFO - Loading configuration from data_generation\config.yaml
+2026-01-19 17:07:22,812 - INFO - Experiment mode: vectorized
+2026-01-19 17:07:22,898 - INFO - Reducers: ['AdaptiveSampling', 'AdaptiveThreshold', 'Aggregation', 'Filtering']
+2026-01-19 17:07:23,021 - INFO - Serializers: ['JSON', 'CBOR']
+2026-01-19 17:07:23,183 - INFO - Starting vectorized experiment...
+2026-01-19 17:09:02,584 - INFO - ============================================================
+2026-01-19 17:09:02,585 - INFO - IoT Edge-Cloud Data Reduction Framework
+2026-01-19 17:09:02,585 - INFO - ============================================================
+2026-01-19 17:09:02,586 - INFO - Validating configuration...
+2026-01-19 17:09:02,613 - INFO - Loading configuration from data_generation\config.yaml
+2026-01-19 17:09:02,625 - INFO - Experiment mode: vectorized
+2026-01-19 17:09:02,626 - INFO - Reducers: ['AdaptiveSampling', 'AdaptiveThreshold', 'Aggregation', 'Filtering']
+2026-01-19 17:09:02,626 - INFO - Serializers: ['JSON', 'CBOR']
+2026-01-19 17:09:02,626 - INFO - Starting vectorized experiment...

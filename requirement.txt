@@ -1,29 +1,45 @@
-# Core Data Processing
-numpy>=1.24.0
-pandas>=2.0.0
+# =============================================================================
+# IoT Edge-Cloud Data Reduction Framework - Requirements
+# =============================================================================
+# Install all dependencies with: pip install -r requirement.txt
+#
+# CORE DEPENDENCIES (Required)
+# -----------------------------------------------------------------------------
 
-# Visualization
-matplotlib>=3.7.0
-seaborn>=0.12.0
+# Data Processing and Analysis
+numpy
+pandas
+# Visualization and Plotting
+matplotlib
+seaborn
 
-# IoT Protocols
-paho-mqtt>=1.6.1
-requests>=2.31.0
+# Configuration Management
+pyyaml
 
 # Serialization
-cbor2>=5.4.6
+cbor2
 
-# Database (choose one or both)
-influxdb-client>=1.36.0  # For time-series data
-# sqlite3 is built-in with Python, no need to install
+# IoT Communication Protocols
+paho-mqtt
+requests
+# OPTIONAL DEPENDENCIES
+# -----------------------------------------------------------------------------
 
-# Metrics and Analysis
-scipy>=1.10.0
-scikit-learn>=1.3.0
+# For Jupyter Notebook Tutorial (tutorial.ipynb)
+jupyter
+ipykernel
+notebook
 
-# System Monitoring
-psutil>=5.9.0
+# For Advanced Analysis (not currently used but useful for extensions)
+# scipy
+# scikit-learn
 
-# Optional: For advanced features
-pyyaml>=6.0  # For configuration files
-python-dotenv>=1.0.0  # For environment variables
+# BUILT-IN LIBRARIES (No installation needed)
+# -----------------------------------------------------------------------------
+# - sqlite3 (database storage)
+# - json (JSON serialization)
+# - logging (logging system)
+# - dataclasses (data structures)
+# - typing (type hints)
+# - datetime (timestamps)
+# - os, sys (system operations)

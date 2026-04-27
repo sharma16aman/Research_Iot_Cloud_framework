@@ -6,8 +6,17 @@ experiment:
   noise: 0.05
   spikes: true
   drift: 0.05
-  reducers: ["AdaptiveSampling", "AdaptiveThreshold"]
-  serializers: ["JSON"]
+  reducers: ["AdaptiveSampling", "AdaptiveThreshold", "Aggregation", "Filtering"]
+  serializers: ["JSON", "CBOR"]
+  
+  # Data mode: "synthetic" or "real"
+  data_mode: "synthetic"  # Change to "real" to use real-world datasets
+  
+  # Real dataset options (only used when data_mode: "real"):
+  # - "intel_lab": Intel Berkeley Research Lab temperature/humidity data
+  # - "smart_building": Smart building sensor data
+  # - "sample": Sample realistic data mimicking real sensors
+  real_dataset: "intel_lab"
 
 # sweep stronger settings
 sweep:
@@ -17,6 +26,11 @@ sweep:
   adaptivethreshold:
     initial_thresh: [0.15, 0.22, 0.30]  # bigger deviation needed to transmit
     max_gap: [20, 40, 60]               # heartbeat: allow sparser sends
+  aggregation:
+    window: [3, 5, 10]                  # aggregation window sizes
+    method: ["mean", "median"]          # aggregation methods
+  filtering:
+    window: [3, 5, 7]                   # filter window sizes
 
 # defaults used when not swept
 adaptive_sampling:
@@ -35,6 +49,14 @@ adaptive_threshold:
   kf_meas_var: 0.01
   max_gap: 40
   drift_boost: 3.0
+
+aggregation:
+  window: 5
+  method: "mean"
+
+filtering:
+  window: 5
+  filter_type: "ma"
 
 
 # streaming block (unchanged; used only when mode: "streaming")

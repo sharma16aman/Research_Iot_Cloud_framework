@@ -1,18 +1,14 @@
-import numpy as np
+import json
 
-def bytes_per_message(serializer, t, v):
-    return len(serializer.dumps({"t": int(t), "v": float(v)}))
+def total_bytes(indices, values, serializer):
+    payload = {
+        "idx": list(map(int, indices)),
+        "vals": list(map(float, values))
+    }
+    return len(serializer.serialize(payload))
 
-def total_bytes(idx, vals, serializer):
-    return int(np.sum([bytes_per_message(serializer, t, v) for t, v in zip(idx, vals)]))
+def reduction_pct(used, baseline):
+    return 100.0 * (1.0 - (used / baseline)) if baseline > 0 else 0.0
 
-def reduction_pct(bytes_used, baseline_bytes):
-    if baseline_bytes == 0: return 0.0
-    return 100.0 * (1.0 - (bytes_used / baseline_bytes))
-
-def energy_proxy(bytes_used, n_msgs, a_per_byte=1.0, b_per_msg=200.0):
-    """
-    Simple linear proxy: E = a*bytes + b*messages
-    Units are arbitrary; tune a,b from literature or device tests.
-    """
-    return a_per_byte * float(bytes_used) + b_per_msg * float(n_msgs)
+def energy_proxy(bytes_sent, messages):
+    return bytes_sent + 50 * messages
